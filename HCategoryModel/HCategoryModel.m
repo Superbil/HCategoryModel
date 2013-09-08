@@ -227,8 +227,6 @@ NSInteger kUnfiedCategory = 0;
     
     [self openDatabase];
     
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    
     [self.database beginTransaction];
     
     HCategory *targetCategory = [self categoryWithCategoryID:targetCategoryID];
@@ -265,10 +263,7 @@ NSInteger kUnfiedCategory = 0;
     if ([self runCommandFromCommands:commands] == NO) {
         return NO;
     }
-//    [self.database endTransaction];
-    
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    
+
     HCategory *insertCategory =
     [[self listCategoryWithCategoryName:insertCategoryName
                           categoryDepth:targetCategory.depth + 1] objectAtIndex:0];
@@ -279,8 +274,6 @@ NSInteger kUnfiedCategory = 0;
 - (BOOL)moveCategory:(HCategory *)sourceCategory
           toCategory:(HCategory *)targetCategory {
     [self openDatabase];
-    
-    [self.database beginTransaction];
     
     // 1. 把 source 的 index 都變成負的 (keep)
     // a = (source.left - 1).id 保存起來
@@ -351,9 +344,7 @@ NSInteger kUnfiedCategory = 0;
     if ([self runCommandFromCommands:@[moveSourceCategoryToTargetCategoryCommand]]) {
         return NO;
     }
-    
-//    [self.database endTransaction];
-    
+
     return YES;
 }
 
@@ -387,8 +378,6 @@ NSInteger kUnfiedCategory = 0;
     
     NSInteger width = category.right - category.left + 1;
     
-    [self.database beginTransaction];
-    
     // delete category
     NSString *deleteCommand =
     [NSString stringWithFormat:@"DELETE FROM %@ WHERE left BETWEEN %d AND %d",
@@ -413,7 +402,6 @@ NSInteger kUnfiedCategory = 0;
     if ([self runCommandFromCommands:commands] == NO) {
         return NO;
     }
-//    [self.database endTransaction];
     
     return YES;
 }
