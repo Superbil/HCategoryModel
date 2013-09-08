@@ -154,7 +154,9 @@ NSInteger kUnfiedCategory = 0;
     NSArray *commands = @[createDatabase, rootCategory];
     
     NSLog(@"creat database at %@", self.databasePath);
-    [self.database open];
+    if (![self.database open]) {
+        return NO;
+    }
     
     FMDatabaseQueue *queue = [FMDatabase databaseWithPath:self.databasePath];
     [queue inDatabase:^(FMDatabase *db) {
