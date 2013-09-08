@@ -62,14 +62,18 @@ NSInteger kUnfiedCategory = 0;
 }
 
 - (BOOL)runCommandFromCommands:(NSArray *)commands {
-    for (NSString *command in commands) {
-        // while command is failed, go out
-//        if ([self.database runCommand:command] == NO) {
-//            [self.database rollbackTransaction];
-//            return NO;
-//        }
-    }
-    return YES;
+    __block BOOL result = YES;
+    [[FMDatabaseQueue databaseQueueWithPath:self.databasePath] inTransaction:^(FMDatabase *db, BOOL *rollback) {
+        for (NSString *command in commands) {
+            FMResultSet *result = [db executeQuery:command];
+            if (![result next]) {
+                *rollback = YES;
+                result = NO;
+                return;
+            }
+        }
+    }];
+    return result;
 }
 
 - (NSArray *)listCategoryWithQueryCommand:(NSString *)queryCommand {
