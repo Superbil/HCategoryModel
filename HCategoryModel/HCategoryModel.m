@@ -122,6 +122,10 @@ NSInteger kUnfiedCategory = 0;
     return [self listCategoryWithQueryCommand:command];
 }
 
+- (NSString *)formattedString:(NSString *)string {
+    return [NSString stringWithCString:sqlite3_mprintf("%q", [string UTF8String]) encoding:NSUTF8StringEncoding];
+}
+
 - (NSArray *)listCategoryWithCategoryName:(NSString *)categoryName
                             categoryDepth:(NSInteger)categoryDepth {
     NSString *command =
@@ -248,9 +252,7 @@ NSInteger kUnfiedCategory = 0;
      tableName,
      targetCategory.right];
     
-    // TODO: use formatted string
-//    NSString *insertCategoryName = [PPdatabase formattedString:name];
-    NSString *insertCategoryName = name;
+    NSString *insertCategoryName = [self formattedString:name];
     NSString *insertCommand =
     [NSString stringWithFormat:@"INSERT INTO %@ (left, right, depth, name) VALUES (%d,%d,%d,'%@');",
      tableName,
@@ -354,9 +356,7 @@ NSInteger kUnfiedCategory = 0;
         return NO;
     }
     
-    // TODO: use formatted string
-//    NSString *updateName = [PPdatabase formattedString:category.name];
-    NSString *updateName = category.name;
+    NSString *updateName = [self formattedString:category.name];
     
     NSString *command =
     [NSString stringWithFormat:@"UPDATE %@ SET name = '%@' WHERE rowid=%d",
