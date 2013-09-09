@@ -62,18 +62,12 @@ NSInteger kUnfiedCategory = 0;
 }
 
 - (BOOL)runCommandFromCommands:(NSArray *)commands {
-    __block BOOL result = YES;
-    [[FMDatabaseQueue databaseQueueWithPath:self.databasePath] inTransaction:^(FMDatabase *db, BOOL *rollback) {
-        for (NSString *command in commands) {
-            FMResultSet *result = [db executeQuery:command];
-            if (![result next]) {
-                *rollback = YES;
-                result = NO;
-                return;
-            }
+    for (NSString *command in commands) {
+        if (![self.database executeUpdate:command]) {
+            return NO;
         }
-    }];
-    return result;
+    }
+    return YES;
 }
 
 - (NSArray *)listCategoryWithQueryCommand:(NSString *)queryCommand {
@@ -159,25 +153,22 @@ NSInteger kUnfiedCategory = 0;
     NSString *rootCategory =
     [NSString stringWithFormat:@"INSERT INTO %@ (left, right, depth, name) VALUES (1,2,0,'root');", tableName];
     
-    NSArray *commands = @[createDatabase, rootCategory];
-    
     NSLog(@"creat database at %@", self.databasePath);
     if (![self.database open]) {
         return NO;
     }
-    
-    FMDatabaseQueue *queue = [FMDatabase databaseWithPath:self.databasePath];
-    [queue inDatabase:^(FMDatabase *db) {
-        [commands enumerateObjectsUsingBlock:^(NSString *command, NSUInteger idx, BOOL *stop) {
-            [db executeQuery:command];
-        }];
-    }];
-    return [[self.database executeQuery:createDatabase] next];
+
+    for (NSString *command in @[createDatabase, rootCategory]) {
+        if ([self.database executeUpdate:command] == NO) {
+            return NO;
+        }
+    }
+    return YES;
 }
 
 - (BOOL)dropDatabase {
     NSString *dropCommand = [NSString stringWithFormat:@"DROP TABLE IF EXISTS %@", tableName];
-    return [[self.database executeQuery:dropCommand] next];
+    return [self.database executeUpdate:dropCommand];
 }
 
 - (NSArray *)listCategory {
@@ -237,7 +228,7 @@ NSInteger kUnfiedCategory = 0;
     
     // while command is failed, go out
     if (targetCategory == nil) {
-//        [self.database rollbackTransaction];
+        [self.database rollback];
         return NO;
     }
     
@@ -366,7 +357,7 @@ NSInteger kUnfiedCategory = 0;
     
     [self openDatabase];
     
-    return [[self.database executeQuery:command] next];
+    return [self.database executeUpdate:command];
 }
 
 - (BOOL)deleteCategory:(HCategory *)category {
