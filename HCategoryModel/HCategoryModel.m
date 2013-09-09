@@ -10,8 +10,6 @@
 #import <FMDB/FMDatabaseQueue.h>
 
 static NSString const *tableName = @"category";
-static NSInteger const majonVersion = 1;
-static NSInteger const minorVersion = 0;
 
 NSInteger kRootCategory = 1;
 NSInteger kUnfiedCategory = 0;
