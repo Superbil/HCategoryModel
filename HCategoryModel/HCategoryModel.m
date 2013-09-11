@@ -41,6 +41,7 @@ NSInteger kUnfiedCategory = 0;
 - (NSArray *)listCategoryWithCommand:(NSString *)sqlCommand;
 - (NSArray *)listCategoryWithCategoryName:(NSString *)categoryName
                             categoryDepth:(NSInteger)categoryDepth;
+- (NSString *)formattedString:(NSString *)string;
 @end
 
 @implementation HCategoryModel
@@ -121,10 +122,6 @@ NSInteger kUnfiedCategory = 0;
     return [self listCategoryWithQueryCommand:command];
 }
 
-- (NSString *)formattedString:(NSString *)string {
-    return [NSString stringWithCString:sqlite3_mprintf("%q", [string UTF8String]) encoding:NSUTF8StringEncoding];
-}
-
 - (NSArray *)listCategoryWithCategoryName:(NSString *)categoryName
                             categoryDepth:(NSInteger)categoryDepth {
     NSString *command =
@@ -134,6 +131,11 @@ NSInteger kUnfiedCategory = 0;
     }
     return [self listCategoryWithQueryCommand:command];
 }
+
+- (NSString *)formattedString:(NSString *)string {
+    return [NSString stringWithCString:sqlite3_mprintf("%q", [string UTF8String]) encoding:NSUTF8StringEncoding];
+}
+
 
 #pragma mark - Implementation method
 
