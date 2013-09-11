@@ -17,8 +17,6 @@
 		E7A0F01A17DDF55300E477EC /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7154D7117DCD57200B1DE47 /* SenTestingKit.framework */; };
 		E7A0F01B17DDF55300E477EC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7154D5917DCC83100B1DE47 /* UIKit.framework */; };
 		E7A0F01C17DDF55300E477EC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7154D4817DCC83100B1DE47 /* Foundation.framework */; };
-		E7A0F02217DDF55300E477EC /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E7A0F02017DDF55300E477EC /* InfoPlist.strings */; };
-		E7A0F02517DDF55300E477EC /* HCategoryModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E7A0F02417DDF55300E477EC /* HCategoryModelTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,10 +60,6 @@
 		E7154D6F17DCC89A00B1DE47 /* HCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HCategory.m; sourceTree = "<group>"; };
 		E7154D7117DCD57200B1DE47 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		E7A0F01917DDF55200E477EC /* HCategoryModelTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HCategoryModelTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E7A0F01F17DDF55300E477EC /* HCategoryModelTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HCategoryModelTests-Info.plist"; sourceTree = "<group>"; };
-		E7A0F02117DDF55300E477EC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		E7A0F02417DDF55300E477EC /* HCategoryModelTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HCategoryModelTests.m; sourceTree = "<group>"; };
-		E7A0F02617DDF55300E477EC /* HCategoryModelTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "HCategoryModelTests-Prefix.pch"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,7 +91,6 @@
 			children = (
 				E7154D4A17DCC83100B1DE47 /* HCategoryModel */,
 				E7154D5E17DCC83100B1DE47 /* HCategoryModelTests */,
-				E7A0F01D17DDF55300E477EC /* HCategoryModelTests */,
 				E7154D4717DCC83100B1DE47 /* Frameworks */,
 				E7154D4617DCC83100B1DE47 /* Products */,
 				BC88F05531244B8CB726E7DA /* Pods.xcconfig */,
@@ -159,25 +152,6 @@
 			children = (
 				E7154D6017DCC83100B1DE47 /* HCategoryModelTests-Info.plist */,
 				E7154D6117DCC83100B1DE47 /* InfoPlist.strings */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		E7A0F01D17DDF55300E477EC /* HCategoryModelTests */ = {
-			isa = PBXGroup;
-			children = (
-				E7A0F02417DDF55300E477EC /* HCategoryModelTests.m */,
-				E7A0F01E17DDF55300E477EC /* Supporting Files */,
-			);
-			path = HCategoryModelTests;
-			sourceTree = "<group>";
-		};
-		E7A0F01E17DDF55300E477EC /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				E7A0F01F17DDF55300E477EC /* HCategoryModelTests-Info.plist */,
-				E7A0F02017DDF55300E477EC /* InfoPlist.strings */,
-				E7A0F02617DDF55300E477EC /* HCategoryModelTests-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -257,7 +231,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E7A0F02217DDF55300E477EC /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -353,7 +326,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E7A0F02517DDF55300E477EC /* HCategoryModelTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -372,14 +344,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				E7154D6217DCC83100B1DE47 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		E7A0F02017DDF55300E477EC /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				E7A0F02117DDF55300E477EC /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
