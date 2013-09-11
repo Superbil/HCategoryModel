@@ -29,7 +29,7 @@ extern NSInteger kUnfiedCategory;
 - (id)initWithDatabasePath:(NSString *)path;
 
 // 若開啟的時候不存在 database 會建立並呼叫 |createDatabase|
-- (void)openDatabase;
+- (BOOL)openDatabase;
 
 // 關閉資料庫
 - (void)closeDatabase;

@@ -36,7 +36,6 @@ NSInteger kUnfiedCategory = 0;
 
 @interface HCategoryModel (PrivateMethod)
 - (NSString *)selectCategoryCommandWithIndexID:(NSInteger)indexID;
-- (BOOL)checkDatabase;
 - (BOOL)runCommandFromCommands:(NSArray *)commands;
 - (NSArray *)listCategoryWithCommand:(NSString *)sqlCommand;
 - (NSArray *)listCategoryWithCategoryName:(NSString *)categoryName
@@ -65,25 +64,6 @@ NSInteger kUnfiedCategory = 0;
 
 - (NSString *)selectCategoryCommandWithIndexID:(NSInteger)indexID {
     return [NSString stringWithFormat:@"SELECT left, right, depth, name FROM %@ WHERE rowid=%d", self.tableName, indexID];
-}
-
-- (BOOL)checkDatabase {
-
-    // while |self.databasePath| is @"", that can make tempuate database in memory
-    if ([self.databasePath isEqualToString:@""]) {
-        return YES;
-    }
-
-    if ([[NSFileManager defaultManager] fileExistsAtPath:self.databasePath] == NO) {
-        return [self createDatabase];
-    } else {
-        NSLog(@"DATABASE IS EXIST AT %@", self.databasePath);
-        if (![self.database open]) {
-            return NO;
-        }
-            
-        return YES;
-    }
 }
 
 - (BOOL)runCommandFromCommands:(NSArray *)commands {
@@ -145,8 +125,8 @@ NSInteger kUnfiedCategory = 0;
 
 #pragma mark - Implementation method
 
-- (void)openDatabase {
-    [self checkDatabase];
+- (BOOL)openDatabase {
+    return [self.database open];
 }
 
 - (void)closeDatabase {

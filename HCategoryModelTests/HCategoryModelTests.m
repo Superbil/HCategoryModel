@@ -44,7 +44,6 @@
     [self.categoryModel dropDatabase];
 #endif
     STAssertTrue([self.categoryModel createDatabase], nil);
-    [self.categoryModel openDatabase];
 }
 
 - (void)tearDown
