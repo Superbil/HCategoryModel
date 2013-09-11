@@ -14,9 +14,27 @@ static NSString *kDefaultTableName = @"category";
 NSInteger kRootCategory = 1;
 NSInteger kUnfiedCategory = 0;
 
+#pragma mark - HCategory Category for FMResutSet
+
+@interface HCategory (FMResutSet)
++ (id)categoryWithResultSet:(FMResultSet *)resultSet;
+@end
+
+@implementation HCategory (FMResutSet)
+
++ (id)categoryWithResultSet:(FMResultSet *)resultSet {
+    return [[HCategory alloc] initWithIdentify:[resultSet intForColumnIndex:0]
+                                                         left:[resultSet intForColumnIndex:1]
+                                                        right:[resultSet intForColumnIndex:2]
+                                                        depth:[resultSet intForColumnIndex:3]
+                                                         name:[resultSet stringForColumnIndex:4]];
+}
+
+@end
+
 #pragma mark - Private define
 
-@interface HCategory (PrivateMethod)
+@interface HCategoryModel (PrivateMethod)
 - (NSString *)selectCategoryCommandWithIndexID:(NSInteger)indexID;
 - (BOOL)checkDatabase;
 - (BOOL)runCommandFromCommands:(NSArray *)commands;
@@ -78,32 +96,16 @@ NSInteger kUnfiedCategory = 0;
         command = [command stringByAppendingFormat:@" WHERE %@", queryCommand];
     }
     
-    sqlite3_stmt *statement;
+    FMResultSet *resultSet = [self.database executeQuery:command];
+
+    NSMutableArray *categorys = [NSMutableArray array];
     
-    if (command && sqlite3_prepare_v2(self.database.sqliteHandle,
-                                      [command UTF8String],
-                                      -1,
-                                      &statement,
-                                      NULL) == SQLITE_OK) {
-        NSMutableArray *categorys = [NSMutableArray array];
-        
-        while (sqlite3_step(statement) == SQLITE_ROW) {
-            NSString *name = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 4)];
-            
-            HCategory *newCategory =
-            [[HCategory alloc] initWithIdentify:sqlite3_column_int(statement, 0)
-                                           left:sqlite3_column_int(statement, 1)
-                                          right:sqlite3_column_int(statement, 2)
-                                          depth:sqlite3_column_int(statement, 3)
-                                           name:name];
-            
-            [categorys addObject:newCategory];
-        }
-        
-        return categorys;
+    while ([resultSet next]) {
+        HCategory *newCategory = [HCategory categoryWithResultSet:resultSet];
+        [categorys addObject:newCategory];
     }
     
-    return nil;
+    return categorys;
 }
 
 - (NSArray *)listCategoryWithCategoryLeft:(NSInteger)categoryLeft
@@ -186,26 +188,21 @@ NSInteger kUnfiedCategory = 0;
 }
 
 - (HCategory *)categoryWithCategoryID:(NSInteger)categoryID {
-    sqlite3_stmt *statement;
+
     NSString *command = [self selectCategoryCommandWithIndexID:categoryID];
-    
-    if (command && sqlite3_prepare_v2(self.database.sqliteHandle,
-                                      [command UTF8String],
-                                      -1,
-                                      &statement,
-                                      NULL) == SQLITE_OK) {
-        while (sqlite3_step(statement) == SQLITE_ROW) {
-            NSString *name = [NSString stringWithUTF8String:(const char *)sqlite3_column_text(statement, 3)];
-            HCategory *newCategory =
-            [[HCategory alloc] initWithIdentify:categoryID
-                                               left:sqlite3_column_int(statement, 0)
-                                              right:sqlite3_column_int(statement, 1)
-                                              depth:sqlite3_column_int(statement, 2)
-                                               name:name];
-            return newCategory;
-        }
+
+    FMResultSet *resultSet = [self.database executeQuery:command];
+
+    while ([resultSet next]) {
+        HCategory *newCategory =
+        [[HCategory alloc] initWithIdentify:categoryID
+                                       left:[resultSet intForColumnIndex:0]
+                                      right:[resultSet intForColumnIndex:1]
+                                      depth:[resultSet intForColumnIndex:2]
+                                       name:[resultSet stringForColumnIndex:3]];
+        return newCategory;
     }
-    
+
     return nil;
 }
 
