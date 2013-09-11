@@ -9,7 +9,7 @@
 #import "HCategoryModel.h"
 #import <FMDB/FMDatabaseQueue.h>
 
-static NSString const *tableName = @"category";
+static NSString *kDefaultTableName = @"category";
 
 NSInteger kRootCategory = 1;
 NSInteger kUnfiedCategory = 0;
@@ -29,6 +29,7 @@ NSInteger kUnfiedCategory = 0;
 
 @synthesize database = database_;
 @synthesize databasePath = path_;
+@synthesize tableName = tableName_;
 
 #pragma mark - Initial and dealloc
 
@@ -36,6 +37,7 @@ NSInteger kUnfiedCategory = 0;
     if (self = [super init]) {
         database_ = [[FMDatabase alloc] initWithPath:path];
         path_ = path;
+        tableName_ = kDefaultTableName;
     }
     return self;
 }
@@ -43,7 +45,7 @@ NSInteger kUnfiedCategory = 0;
 #pragma mark - Private method
 
 - (NSString *)selectCategoryCommandWithIndexID:(NSInteger)indexID {
-    return [NSString stringWithFormat:@"SELECT left, right, depth, name FROM %@ WHERE rowid=%d", tableName, indexID];
+    return [NSString stringWithFormat:@"SELECT left, right, depth, name FROM %@ WHERE rowid=%d", self.tableName, indexID];
 }
 
 - (BOOL)checkDatabase {
@@ -70,7 +72,7 @@ NSInteger kUnfiedCategory = 0;
 
 - (NSArray *)listCategoryWithQueryCommand:(NSString *)queryCommand {
     NSString *command =
-    [NSString stringWithFormat:@"SELECT rowid, left, right, depth, name FROM %@", tableName];
+    [NSString stringWithFormat:@"SELECT rowid, left, right, depth, name FROM %@", self.tableName];
     
     if (queryCommand) {
         command = [command stringByAppendingFormat:@" WHERE %@", queryCommand];
@@ -146,10 +148,10 @@ NSInteger kUnfiedCategory = 0;
      left INT NOT NULL,\
      right INT NOT NULL,\
      depth INT NO NULL\
-     );", tableName];
+     );", self.tableName];
     
     NSString *rootCategory =
-    [NSString stringWithFormat:@"INSERT INTO %@ (left, right, depth, name) VALUES (1,2,0,'root');", tableName];
+    [NSString stringWithFormat:@"INSERT INTO %@ (left, right, depth, name) VALUES (1,2,0,'root');", self.tableName];
     
     NSLog(@"creat database at %@", self.databasePath);
     if (![self.database open]) {
@@ -165,7 +167,7 @@ NSInteger kUnfiedCategory = 0;
 }
 
 - (BOOL)dropDatabase {
-    NSString *dropCommand = [NSString stringWithFormat:@"DROP TABLE IF EXISTS %@", tableName];
+    NSString *dropCommand = [NSString stringWithFormat:@"DROP TABLE IF EXISTS %@", self.tableName];
     return [self.database executeUpdate:dropCommand];
 }
 
@@ -232,19 +234,19 @@ NSInteger kUnfiedCategory = 0;
     
     NSString *rightUpdateCommand =
     [NSString stringWithFormat:@"UPDATE %@ SET right = right + 2 WHERE right >= %d",
-     tableName,
+     self.tableName,
      targetCategory.right];
     
     
     NSString *leftUpdateCommand =
     [NSString stringWithFormat:@"UPDATE %@ SET left = left + 2 WHERE left > %d",
-     tableName,
+     self.tableName,
      targetCategory.right];
     
     NSString *insertCategoryName = [self formattedString:name];
     NSString *insertCommand =
     [NSString stringWithFormat:@"INSERT INTO %@ (left, right, depth, name) VALUES (%d,%d,%d,'%@');",
-     tableName,
+     self.tableName,
      targetCategory.right,
      targetCategory.right + 1,
      targetCategory.depth + 1,
@@ -271,7 +273,7 @@ NSInteger kUnfiedCategory = 0;
     NSInteger width = sourceCategory.right - sourceCategory.left + 1;
     NSString *tempSourceCommand =
     [NSString stringWithFormat:@"UPDATE %@ SET left = left * -1, right = right * -1 WHERE left >= %d AND right <= %d;",
-     tableName,
+     self.tableName,
      sourceCategory.left,
      sourceCategory.right];
     
@@ -280,14 +282,14 @@ NSInteger kUnfiedCategory = 0;
     // 更新右點
     NSString *createWidthOnTargetCategoryRightCommand =
     [NSString stringWithFormat:@"UPDATE %@ SET right = right + %d WHERE right >= %d",
-     tableName,
+     self.tableName,
      width,
      targetCategory.right];
     
     // 更新左點
     NSString *createWidthOnTargetCategoryLeftCommand =
     [NSString stringWithFormat:@"UPDATE %@ SET left = left + %d WHERE left > %d",
-     tableName,
+     self.tableName,
      width,
      targetCategory.right];
     
@@ -296,14 +298,14 @@ NSInteger kUnfiedCategory = 0;
     // 更新右點
     NSString *removeTempRightCommand =
     [NSString stringWithFormat:@"UPDATE %@ SET right = right - %d WHERE right > %d",
-     tableName,
+     self.tableName,
      width,
      sourceCategory.right];
     
     // 更新左點
     NSString *removeTempLeftCommand =
     [NSString stringWithFormat:@"UPDATE %@ SET left = left - %d WHERE left > %d",
-     tableName,
+     self.tableName,
      width,
      sourceCategory.right];
     
@@ -327,7 +329,7 @@ NSInteger kUnfiedCategory = 0;
     
     NSString *moveSourceCategoryToTargetCategoryCommand =
     [NSString stringWithFormat:@"UPDATE %@ SET left = left * -1 + %d, right = right * -1 + %d, depth = depth + %d WHERE left < 0",
-     tableName,
+     self.tableName,
      fixWidth,
      fixWidth,
      -sourceCategory.depth + newTargetCategory.depth + 1];
@@ -349,7 +351,7 @@ NSInteger kUnfiedCategory = 0;
     
     NSString *command =
     [NSString stringWithFormat:@"UPDATE %@ SET name = '%@' WHERE rowid=%d",
-     tableName,
+     self.tableName,
      updateName,
      category.identify];
     
@@ -370,20 +372,20 @@ NSInteger kUnfiedCategory = 0;
     // delete category
     NSString *deleteCommand =
     [NSString stringWithFormat:@"DELETE FROM %@ WHERE left BETWEEN %d AND %d",
-     tableName,
+     self.tableName,
      category.left,
      category.right];
     
     NSString *rightUpdateCommand =
     [NSString stringWithFormat:@"UPDATE %@ SET right = right - %d WHERE right > %d",
-     tableName,
+     self.tableName,
      width,
      category.right];
     
     
     NSString *leftUpdateCommand =
     [NSString stringWithFormat:@"UPDATE %@ SET left = left - %d WHERE left > %d" ,
-     tableName,
+     self.tableName,
      width,
      category.right];
     

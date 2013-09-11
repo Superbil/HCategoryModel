@@ -15,12 +15,16 @@ extern NSInteger kUnfiedCategory;
 
 @interface HCategoryModel : NSObject {
     FMDatabase *database_;
+    NSString *path_;
+    NSString *tableName_;
 }
 
 @property (nonatomic, strong) FMDatabase *database;
 
 // 資料庫路徑
 @property (nonatomic, strong, readonly) NSString *databasePath;
+
+@property (nonatomic, strong) NSString *tableName;
 
 - (id)initWithDatabasePath:(NSString *)path;
 
