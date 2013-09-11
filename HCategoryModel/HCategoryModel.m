@@ -80,11 +80,14 @@ NSInteger kUnfiedCategory = 0;
 }
 
 - (BOOL)runCommandFromCommands:(NSArray *)commands {
+    [self.database beginTransaction];
     for (NSString *command in commands) {
         if (![self.database executeUpdate:command]) {
+            [self.database rollback];
             return NO;
         }
     }
+    [self.database commit];
     return YES;
 }
 
@@ -219,13 +222,10 @@ NSInteger kUnfiedCategory = 0;
     
     [self openDatabase];
     
-    [self.database beginTransaction];
-    
     HCategory *targetCategory = [self categoryWithCategoryID:targetCategoryID];
     
     // while command is failed, go out
     if (targetCategory == nil) {
-        [self.database rollback];
         return NO;
     }
     
@@ -253,11 +253,11 @@ NSInteger kUnfiedCategory = 0;
     if ([self runCommandFromCommands:commands] == NO) {
         return NO;
     }
-
+    
     HCategory *insertCategory =
     [[self listCategoryWithCategoryName:insertCategoryName
                           categoryDepth:targetCategory.depth + 1] objectAtIndex:0];
-    
+
     return insertCategory.identify;
 }
 
@@ -312,6 +312,7 @@ NSInteger kUnfiedCategory = 0;
                           removeTempRightCommand,
                           removeTempLeftCommand,
                           ];
+
     if ([self runCommandFromCommands:commands] == NO) {
         return NO;
     }
@@ -330,8 +331,8 @@ NSInteger kUnfiedCategory = 0;
      fixWidth,
      fixWidth,
      -sourceCategory.depth + newTargetCategory.depth + 1];
-    
-    if ([self runCommandFromCommands:@[moveSourceCategoryToTargetCategoryCommand]]) {
+
+    if ([self runCommandFromCommands:@[moveSourceCategoryToTargetCategoryCommand]] == NO) {
         return NO;
     }
 
