@@ -68,6 +68,12 @@ NSInteger kUnfiedCategory = 0;
 }
 
 - (BOOL)checkDatabase {
+
+    // while |self.databasePath| is @"", that can make tempuate database in memory
+    if ([self.databasePath isEqualToString:@""]) {
+        return YES;
+    }
+
     if ([[NSFileManager defaultManager] fileExistsAtPath:self.databasePath] == NO) {
         return [self createDatabase];
     } else {
