@@ -14,6 +14,7 @@
 		E7154D4E17DCC83100B1DE47 /* HCategoryModel.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = E7154D4D17DCC83100B1DE47 /* HCategoryModel.h */; };
 		E7154D5017DCC83100B1DE47 /* HCategoryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E7154D4F17DCC83100B1DE47 /* HCategoryModel.m */; };
 		E7154D7017DCC89A00B1DE47 /* HCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = E7154D6F17DCC89A00B1DE47 /* HCategory.m */; };
+		E71E1A9F182630B6007B4E78 /* HCategoryModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = E7154D6417DCC83100B1DE47 /* HCategoryModelTests.m */; };
 		E7A0F01A17DDF55300E477EC /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7154D7117DCD57200B1DE47 /* SenTestingKit.framework */; };
 		E7A0F01B17DDF55300E477EC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7154D5917DCC83100B1DE47 /* UIKit.framework */; };
 		E7A0F01C17DDF55300E477EC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7154D4817DCC83100B1DE47 /* Foundation.framework */; };
@@ -326,6 +327,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E71E1A9F182630B6007B4E78 /* HCategoryModelTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -128,11 +128,11 @@
 - (void)testMoveSample {
     [self cleanTree];
 
-    [self.categoryModel insertCategoryWithName:@"A" atCategoryID:1];
+    [self.categoryModel insertCategoryWithName:@"A" atCategoryID:kRootCategory];
     [self.categoryModel insertCategoryWithName:@"B" atCategoryID:2];
 
 
-    HCategory *rootCategory = [self.categoryModel categoryWithCategoryID:1];
+    HCategory *rootCategory = [self.categoryModel categoryWithCategoryID:kRootCategory];
     HCategory *moveCategory = [self.categoryModel categoryWithCategoryID:3];
 
     [self.categoryModel moveCategory:moveCategory toCategory:rootCategory];
@@ -141,7 +141,7 @@
     for (HCategory *vcf in categories) {
         switch (vcf.identify) {
             case 1:
-                STAssertTrue(vcf.left == 1, nil);
+                STAssertTrue(vcf.left == kRootCategory, nil);
                 STAssertTrue(vcf.right == 6, nil);
                 STAssertTrue(vcf.depth == 0, nil);
                 break;
@@ -164,12 +164,12 @@
 - (void)testMoveHard_Left2Right {
     [self cleanTree];
 
-    [self.categoryModel insertCategoryWithName:@"A" atCategoryID:1];
+    [self.categoryModel insertCategoryWithName:@"A" atCategoryID:kRootCategory];
     [self.categoryModel insertCategoryWithName:@"B" atCategoryID:2];
     [self.categoryModel insertCategoryWithName:@"C" atCategoryID:2];
-    [self.categoryModel insertCategoryWithName:@"D" atCategoryID:1];
+    [self.categoryModel insertCategoryWithName:@"D" atCategoryID:kRootCategory];
     [self.categoryModel insertCategoryWithName:@"E" atCategoryID:5];
-    [self.categoryModel insertCategoryWithName:@"F" atCategoryID:1];
+    [self.categoryModel insertCategoryWithName:@"F" atCategoryID:kRootCategory];
 
     HCategory *a = [self.categoryModel categoryWithCategoryID:2];
     HCategory *e = [self.categoryModel categoryWithCategoryID:6];
@@ -180,7 +180,7 @@
     for (HCategory *vcf in [self.categoryModel listCategory]) {
         switch (vcf.identify) {
             case 1:
-                STAssertTrue(vcf.left == 1, nil);
+                STAssertTrue(vcf.left == kRootCategory, nil);
                 STAssertTrue(vcf.right == 14, nil);
                 STAssertTrue(vcf.depth == 0, nil);
                 break;
@@ -218,7 +218,7 @@
     }
 
     HCategory *newA = [self.categoryModel categoryWithCategoryID:2];
-    HCategory *root = [self.categoryModel categoryWithCategoryID:1];
+    HCategory *root = [self.categoryModel categoryWithCategoryID:kRootCategory];
 
     // move newA to root
     [self.categoryModel moveCategory:newA toCategory:root];
@@ -226,7 +226,7 @@
     for (HCategory *vcf in [self.categoryModel listCategory]) {
         switch (vcf.identify) {
             case 1:
-                STAssertTrue(vcf.left == 1, nil);
+                STAssertTrue(vcf.left == kRootCategory, nil);
                 STAssertTrue(vcf.right == 14, nil);
                 STAssertTrue(vcf.depth == 0, nil);
                 break;
@@ -267,12 +267,12 @@
 - (void)testMoveHard_Right2Left {
     [self cleanTree];
 
-    [self.categoryModel insertCategoryWithName:@"A" atCategoryID:1];
+    [self.categoryModel insertCategoryWithName:@"A" atCategoryID:kRootCategory];
     [self.categoryModel insertCategoryWithName:@"B" atCategoryID:2];
     [self.categoryModel insertCategoryWithName:@"C" atCategoryID:2];
-    [self.categoryModel insertCategoryWithName:@"D" atCategoryID:1];
+    [self.categoryModel insertCategoryWithName:@"D" atCategoryID:kRootCategory];
     [self.categoryModel insertCategoryWithName:@"E" atCategoryID:5];
-    [self.categoryModel insertCategoryWithName:@"F" atCategoryID:1];
+    [self.categoryModel insertCategoryWithName:@"F" atCategoryID:kRootCategory];
 
     HCategory *c = [self.categoryModel categoryWithCategoryID:4];
     HCategory *d = [self.categoryModel categoryWithCategoryID:5];
@@ -282,7 +282,7 @@
     for (HCategory *vcf in [self.categoryModel listCategory]) {
         switch (vcf.identify) {
             case 1:
-                STAssertTrue(vcf.left == 1, nil);
+                STAssertTrue(vcf.left == kRootCategory, nil);
                 STAssertTrue(vcf.right == 14, nil);
                 STAssertTrue(vcf.depth == 0, nil);
                 break;
@@ -328,10 +328,10 @@
 - (void)testMoveVeryHardWay {
     [self cleanTree];
 
-    [self.categoryModel insertCategoryWithName:@"A" atCategoryID:1];
-    [self.categoryModel insertCategoryWithName:@"B" atCategoryID:1];
-    [self.categoryModel insertCategoryWithName:@"F" atCategoryID:1];
-    [self.categoryModel insertCategoryWithName:@"J" atCategoryID:1];
+    [self.categoryModel insertCategoryWithName:@"A" atCategoryID:kRootCategory];
+    [self.categoryModel insertCategoryWithName:@"B" atCategoryID:kRootCategory];
+    [self.categoryModel insertCategoryWithName:@"F" atCategoryID:kRootCategory];
+    [self.categoryModel insertCategoryWithName:@"J" atCategoryID:kRootCategory];
 
     [self.categoryModel insertCategoryWithName:@"C" atCategoryID:3];
     [self.categoryModel insertCategoryWithName:@"G" atCategoryID:4];
@@ -349,7 +349,7 @@
     for (HCategory *vcf in [self.categoryModel listCategory]) {
         switch (vcf.identify) {
             case 1:
-                STAssertTrue(vcf.left == 1, nil);
+                STAssertTrue(vcf.left == kRootCategory, nil);
                 STAssertTrue(vcf.right == 22, nil);
                 STAssertTrue(vcf.depth == 0, nil);
                 break;
@@ -415,11 +415,11 @@
 - (void)testListDepth {
     [self cleanTree];
 
-    [self.categoryModel insertCategoryWithName:@"A" atCategoryID:1];
+    [self.categoryModel insertCategoryWithName:@"A" atCategoryID:kRootCategory];
     [self.categoryModel insertCategoryWithName:@"B" atCategoryID:2];
-    [self.categoryModel insertCategoryWithName:@"C" atCategoryID:1];
+    [self.categoryModel insertCategoryWithName:@"C" atCategoryID:kRootCategory];
 
-    NSArray *resultCategories = [self.categoryModel listCategoryWithCategoryID:1];
+    NSArray *resultCategories = [self.categoryModel listCategoryWithCategoryID:kRootCategory];
     STAssertNotNil(resultCategories, @"result listCategoryWithCategoryID is null");
     STAssertTrue([resultCategories count] == 2, nil);
 
@@ -441,11 +441,11 @@
 
 - (void)testParentCategory {
     [self cleanTree];
-    NSInteger insertCategoryID = [self.categoryModel insertCategoryWithName:@"firstNode" atCategoryID:1];
+    NSInteger insertCategoryID = [self.categoryModel insertCategoryWithName:@"firstNode" atCategoryID:kRootCategory];
     HCategory *parentCategory = [self.categoryModel parentCategoryWithCategoryID:insertCategoryID];
     NSLog(@"%@", parentCategory);
-    STAssertTrue(parentCategory.identify == 1, nil);
-    STAssertTrue(parentCategory.left == 1, nil);
+    STAssertTrue(parentCategory.identify == kRootCategory, nil);
+    STAssertTrue(parentCategory.left == kRootCategory, nil);
     STAssertTrue(parentCategory.right == 4, nil);
     STAssertTrue([parentCategory.name compare:@"root"] == NSOrderedSame, nil);
 }
