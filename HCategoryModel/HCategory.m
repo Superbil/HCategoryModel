@@ -21,7 +21,8 @@
                  right:(NSInteger)right
                  depth:(NSInteger)depth
                   name:(NSString *)name {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         identify_ = identify;
         left_ = left;
         right_ = right;

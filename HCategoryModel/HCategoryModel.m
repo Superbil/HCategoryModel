@@ -24,10 +24,10 @@ NSInteger kUnfiedCategory = 0;
 
 + (id)categoryWithResultSet:(FMResultSet *)resultSet {
     return [[HCategory alloc] initWithIdentify:[resultSet intForColumnIndex:0]
-                                                         left:[resultSet intForColumnIndex:1]
-                                                        right:[resultSet intForColumnIndex:2]
-                                                        depth:[resultSet intForColumnIndex:3]
-                                                         name:[resultSet stringForColumnIndex:4]];
+                                          left:[resultSet intForColumnIndex:1]
+                                         right:[resultSet intForColumnIndex:2]
+                                         depth:[resultSet intForColumnIndex:3]
+                                          name:[resultSet stringForColumnIndex:4]];
 }
 
 @end
@@ -52,7 +52,8 @@ NSInteger kUnfiedCategory = 0;
 #pragma mark - Initial and dealloc
 
 - (id)initWithDatabasePath:(NSString *)path {
-    if (self = [super init]) {
+    self = [super init];
+    if (self) {
         database_ = [[FMDatabase alloc] initWithPath:path];
         path_ = path;
         tableName_ = kDefaultTableName;
