@@ -56,7 +56,7 @@
 
 - (void)insertTestData {
     // insert at root
-    NSInteger insertCategoryID = [self.categoryModel insertCategoryWithName:@"firstNode" atCategoryID:1];
+    NSInteger insertCategoryID = [self.categoryModel insertCategoryWithName:@"firstNode" atCategoryID:kRootCategory];
     STAssertTrue(insertCategoryID > 1, nil);
 }
 
