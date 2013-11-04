@@ -1,0 +1,8 @@
+language: objective-c
+
+before_install:
+    - brew update
+    - brew install xctool
+    - pod install
+
+script: xctool -workspace HCategoryModel.xcworkspace -scheme HCategoryModel -sdk iphonesimulator test
